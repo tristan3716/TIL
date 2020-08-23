@@ -1,0 +1,23 @@
+.sidebar {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.sidebar-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.content {
+    padding-top: 0px;
+}
+
+.sidebar p {
+    margin: 2px 0px;
+}
+
+.sidebar li {
+    margin: 2px 0px;
+}
