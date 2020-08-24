@@ -1,5 +1,8 @@
-**TIL**
-* [/TIL/TIL/20-08-24.md](/TIL/TIL/20-08-24.md)
+- [Algorithm](/Algorithm/)
 
-**TIL2**
-* [/TIL/TIL2/20-08-24.md](/TIL/TIL2/20-08-24.md)
+- TIL
+    - [20-08-24](/TIL/20-08-24.md)
+    - [README](/TIL/README.md)
+
+- TIL2
+    - [20-08-24](/TIL2/20-08-24.md)
