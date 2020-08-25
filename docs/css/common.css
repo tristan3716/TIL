@@ -1,4 +1,3 @@
-
 .page_toc {
     position: fixed;
     top: 100px;
@@ -6,4 +5,103 @@
 
 .content {
     padding-top: 0px;
+}
+
+.holder {
+    border: 1px var(--theme-color,#42b983) solid;
+    width: 100%;
+    padding: 20px;
+}
+
+.popup {
+    position: fixed;
+    width: 250px;
+    box-shadow: 0px 0px 6px 2px gray;
+    background-color: white;
+}
+
+.popup-header {
+    background-color: whitesmoke;
+}
+
+.popup div {
+    padding: 4px 8px;
+}
+
+
+.resizable {
+    padding: 0px !important;
+    position: fixed;
+
+    --resizer-weight: 3px;
+}
+
+.resizable .resizer {
+    width: calc(var(--resizer-weight) * 2);
+    height: calc(var(--resizer-weight) * 2);
+    background: white;
+    border: 1px solid #4286f4;
+    /* background: unset;
+    border: unset; */
+    position: absolute;
+}
+.resizable .resizer.top-left {
+    z-index: 1;
+    border-radius: 50%;
+    width: calc(var(--resizer-weight) * 4);
+    height: calc(var(--resizer-weight) * 4);
+    left: calc(var(--resizer-weight) * -2);
+    top: calc(var(--resizer-weight) * -2);
+    cursor: nwse-resize;
+}
+.resizable .resizer.top-right {
+    z-index: 1;
+    border-radius: 50%;
+    width: calc(var(--resizer-weight) * 4);
+    height: calc(var(--resizer-weight) * 4);
+    right: calc(var(--resizer-weight) * -2);;
+    top: calc(var(--resizer-weight) * -2);
+    cursor: nesw-resize;
+}
+.resizable .resizer.bottom-left {
+    z-index: 1;
+    border-radius: 50%;
+    width: calc(var(--resizer-weight) * 4);
+    height: calc(var(--resizer-weight) * 4);
+    left: calc(var(--resizer-weight) * -2);
+    bottom: calc(var(--resizer-weight) * -2);
+    cursor: nesw-resize;
+}
+.resizable .resizer.bottom-right {
+    z-index: 1;
+    border-radius: 50%;
+    width: calc(var(--resizer-weight) * 4);
+    height: calc(var(--resizer-weight) * 4);
+    right: calc(var(--resizer-weight) * -2);
+    bottom: calc(var(--resizer-weight) * -2);
+    cursor: nwse-resize;
+}
+.resizable .resizer.bottom {
+    left: calc(var(--resizer-weight) - 1px);
+    width: calc(100% - (var(--resizer-weight) - 1px) * 2);
+    bottom: calc(var(--resizer-weight) * -1);
+    cursor: ns-resize;
+}
+.resizable .resizer.top {
+    left: calc(var(--resizer-weight) - 1px);
+    width: calc(100% - (var(--resizer-weight) - 1px) * 2);
+    top: calc(var(--resizer-weight) * -1);
+    cursor: ns-resize;
+}
+.resizable .resizer.left {
+    top: calc(var(--resizer-weight) - 1px);
+    height: calc(100% - (var(--resizer-weight) - 1px) * 2);
+    left: calc(var(--resizer-weight) * -1);
+    cursor: ew-resize;
+}
+.resizable .resizer.right {
+    top: calc(var(--resizer-weight) - 1px);
+    height: calc(100% - (var(--resizer-weight) - 1px) * 2);
+    right: calc(var(--resizer-weight) * -1);
+    cursor: ew-resize;
 }

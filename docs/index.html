@@ -8,17 +8,17 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta name="google-site-verification" content="zPR1-xWecb71Z_nT3cWyyBtvqOUpANirgEFgm3gBWlI" />
     <meta name="naver-site-verification" content="b8fa904abcb6d81b04e6486e5a39a8bcc8886973" />
-    <link rel="icon" href="/_media/favicon.ico">
+    <link rel="icon" href="./_media/favicon.ico">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
     <link rel="stylesheet" href="./css/common.css">
     <link rel="stylesheet" href="./css/sidebar.css">
     <link rel="stylesheet" href="https://unpkg.com/docsify-toc@1.0.0/dist/toc.css">
-
 </head>
 <body>
     <div id="app">Loading...</div>
     <script>
         window.$docsify = {
+            executeScript: true,
             name: '📚 Today I Learned',
             repo: 'https://github.com/tristan3716/TIL',
             routerMode: 'hash',
@@ -50,6 +50,31 @@
                 headings: 'h2, h3, h4, h5, h6',
                 title: 'Table of Contents',
             },
+            plugins: [
+                function (hook, vm) {
+                    // load livere
+                    hook.afterEach((content) => {
+                        const comment =
+                            "\n<hr><div id='lv-container' data-id='city' data-uid='MTAyMC81MTM5OC8yNzg3OQ=='></div>";
+                        return content + comment;
+                    });
+
+                    hook.doneEach(function () {
+                        (function (d, s) {
+                            var j,
+                            e = d.getElementsByTagName(s)[0];
+                            if (typeof LivereTower === "function") {
+                                return;
+                            }
+                            j = d.createElement(s);
+                            j.src = "https://cdn-city.livere.com/js/embed.dist.js";
+                            j.async = true;
+                            e.parentNode.insertBefore(j, e);
+                        })
+                        (document, "script");
+                    });
+                },
+            ],
         }
     </script>
     <script src="//cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
@@ -58,6 +83,6 @@
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
     <script src="https://unpkg.com/docsify-copy-code@2"></script>
     <script src="https://unpkg.com/docsify-toc@1.0.0/dist/toc.js"></script>
-
+</script>
 </body>
 </html>
