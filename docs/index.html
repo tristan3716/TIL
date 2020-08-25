@@ -56,6 +56,7 @@
                     hook.afterEach((content) => {
                         const comment =
                             "\n<hr><div id='lv-container' data-id='city' data-uid='MTAyMC81MTM5OC8yNzg3OQ=='></div>";
+                        hook.afterEach = null;
                         return content + comment;
                     });
 
