@@ -1,7 +1,18 @@
 # Make Draggable Object!
 
+<indent></indent>순수 Javascript로 구현된 Draggable Element입니다.
+
+<indent></indent>`position: fixed` 가 적용되어, 화면 내에서 항상 같은 위치에 유지되어야할 엘리멘트(e.g. 리모컨, 스크롤을 따라오는 네비게이션)에 적합합니다.
+
+<indent></indent>이동 가능한 영역은 기본적으로 가로 documentElement.clientWidth, 세로 documentElement.clientHeight로 눈에 보이는 박스 내부에 해당하는 영역으로 제한되어 있습니다.
+
+<indent></indent>드래그 가능한 영역(데모에선 타이틀바)을 지정할 수 있고, 지정하지 않으면 엘리멘트 전체가 드래그 가능 영역으로 지정됩니다.
+
+<indent></indent>리사이즈 가능한 엘리먼트는 데모에선 편의상 리사이저 영역이 눈에 보이도록 css가 적용되어 있습니다. 또, 필요시 조절가능한 최소크기를 지정할 수 있습니다.
+
+## Demo
 <div class="holder" style="height: 250px;">
-    <div id="draggable-element1" class="popup">
+    <div id="draggable-element1" class="popup" style="z-index: 99">
         <div id="drag-area1" class="popup-header">
             Popup 1
         </div>
@@ -17,7 +28,7 @@
     <br>
     <br>
     <br>
-    <div id="draggable-element2" class="popup">
+    <div id="draggable-element2" class="popup" style="z-index: 99">
         <div id="drag-area2" class="popup-header">
             Popup 2
         </div>
@@ -29,20 +40,26 @@
     </div>
 </div>
 
+## CSS
+
 ``` css
+.popup {
+    position: fixed;
+}
+
 .resizable {
     position: fixed;
-    --resizer-weight: 3px;
+    --resizer-weight: 3px; /* 리사이저 영역의 넓이를 의미합니다. */
 }
 
 .resizable .resizer {
+    position: absolute;
     width: calc(var(--resizer-weight) * 2);
     height: calc(var(--resizer-weight) * 2);
-    background: white;
-    border: 1px solid #4286f4;
     background: unset;
     border: unset;
-    position: absolute;
+    /* background: white; */ 
+    /* border: 1px solid #4286f4; */
 }
 .resizable .resizer.top-left {
     z-index: 1;
@@ -105,6 +122,56 @@
     cursor: ew-resize;
 }
 ```
+
+## Builder script
+
+해당 클래스는 drag, resize 가능 여부를 유연하게 지정하기 위해서 빌더 패턴이 적용되었습니다. 빌더 패턴에 대해서는 추후에 별도의 문서로 정리할 필요가 있을 듯 합니다.
+
+``` js
+class Builder {
+    constructor(elementQuery) {
+        this.elementQuery = elementQuery;
+        this.isDraggable = false;
+        this.isResizable = false;
+        this.positionMargin = 4;
+        this.minimumWidth = 10;
+        this.minimumHeight = 10;
+
+        return this;
+    }
+
+    draggable(dragAreaQuery = null) {
+        this.dragAreaQuery = dragAreaQuery ? dragAreaQuery : this.elementQuery;
+        this.isDraggable = true;
+        return this;
+    }
+
+    resizable(value = true) {
+        this.isResizable = value;
+        return this;
+    }
+    minimumSize(width, height) {
+        this.minimumWidth = width;
+        this.minimumHeight = height;
+        return this;
+    }
+
+    setPositionMargin(value) {
+        this.positionMargin = value;
+        return this;
+    }
+
+    build() {
+        return new Popup(this);
+    }
+}
+```
+
+## TODO list
+- [ ] 화면보다 크게 리사이즈하는 경우를 제한하지 않습니다.
+- [ ] 등록한 Resize 이벤트 리스너가 정확히 제거되지 않습니다.
+
+<link rel="stylesheet" href="./css/popup.css">
 
 <script>
 class Popup {
@@ -208,26 +275,7 @@ class Popup {
         this.oldEventPositionY = 0;
 
         if (this.draggable) {
-            document.addEventListener('mousedown', (event) => {
-                this.element = document.querySelector(this.elementQuery);
-                if (!this.element) return;
-
-                if (!event.target.closest(this.dragAreaQuery)) return;
-
-                this.elementWidth = this.element.clientWidth;
-                this.elementHeight = this.element.clientHeight;
-
-                event = event || window.event;
-                event.preventDefault();
-                
-                this.oldEventPositionX = event.clientX;
-                this.oldEventPositionY = event.clientY;
-
-                document.addEventListener('mousemove', this.elementDrag);
-                document.addEventListener('mouseup', this.releaseDrag);
-
-                return true;
-            });
+            document.addEventListener('mousedown', this.handleDrag);
         }
 
         if (this.resizable) {
@@ -356,17 +404,47 @@ class Popup {
 
     }
 
-    elementDrag = (event) => {
-        const documentWidth = document.documentElement.clientWidth;
-        const documentHeight = document.documentElement.scrollHeight;
+    get #boundingAreaPosition() {
+        return {
+            left: 0,
+            top: 0,
+        }
+    }
+    get #boundingAreaSize() {
+        return {
+            width: document.documentElement.clientWidth,
+            height: document.documentElement.scrollHeight,
+        }
+    }
+    handleDrag = (event) => {
+        this.element = document.querySelector(this.elementQuery);
+        if (!this.element) return;
+
+        if (!event.target.closest(this.dragAreaQuery)) return;
+
+        this.elementWidth = this.element.clientWidth;
+        this.elementHeight = this.element.clientHeight;
 
         event = event || window.event;
         event.preventDefault();
+        
+        this.oldEventPositionX = event.clientX;
+        this.oldEventPositionY = event.clientY;
 
-        const maxLeftPosition = documentWidth - this.elementWidth - this.positionMargin;
-        const maxTopPosition = documentHeight - this.elementHeight - this.positionMargin;
-        const minLeftPosition = this.positionMargin;
-        const minTopPosition = this.positionMargin;
+        document.addEventListener('mousemove', this.elementDrag);
+        document.addEventListener('mouseup', this.releaseDrag);
+
+        return true;
+    }
+
+    elementDrag = (event) => {
+        event = event || window.event;
+        event.preventDefault();
+
+        const maxLeftPosition = this.#boundingAreaSize.width - this.elementWidth - this.positionMargin + this.#boundingAreaPosition.left;
+        const maxTopPosition = this.#boundingAreaSize.height - this.elementHeight - this.positionMargin + this.#boundingAreaPosition.top;
+        const minLeftPosition = this.positionMargin + this.#boundingAreaPosition.left;
+        const minTopPosition = this.positionMargin + this.#boundingAreaPosition.top;
 
         const deltaX = this.oldEventPositionX - event.clientX;
         const deltaY = this.oldEventPositionY - event.clientY;
@@ -382,9 +460,25 @@ class Popup {
         document.removeEventListener('mousemove', this.elementDrag);
         document.removeEventListener('mouseup', this.releaseDrag);
     }
+
+    release = () => {
+        document.removeEventListener('mousedown', this.handleDrag);
+        this.releaseDrag();
+    }
 }
 
-const drag1 = Popup.builder('#draggable-element1').draggable('#drag-area1').build();
-const drag2 = Popup.builder('#draggable-element2').draggable('#drag-area2').resizable().minimumSize(200, 80).build();
+const element1 = Popup.builder('#draggable-element1').draggable('#drag-area1').build();
+const element2 = Popup.builder('#draggable-element2').draggable('#drag-area2').resizable().minimumSize(200, 80).build();
 
+window.addEventListener('hashchange', (event) => {
+    const srcRegex = /^.*?#\/(.*?)(?:\?.*|)$/g
+    const dstRegex = /^.*?#\/(.*?)(?:\?.*|)$/g
+    const srcURL = srcRegex.exec(event.oldURL);
+    const dstURL = dstRegex.exec(event.newURL);
+    
+    if ('Javascript/draggable' !== dstURL[1]) {
+        element1.release();
+        element2.release();
+    }
+});
 </script>
