@@ -1,15 +1,11 @@
-.page_toc {
-    position: fixed;
-    top: 100px;
-}
-@media screen and (max-width: 1300px) {
-    .page_toc {
-        display: none;
-    }
-}
-
 .content {
     padding-top: 0px;
+}
+
+@media screen and (max-width: 768px) {
+    .markdown-section {
+        max-width: 90%;
+    }
 }
 
 .write-date {
