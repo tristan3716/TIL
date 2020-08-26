@@ -1,5 +1,7 @@
 # Setup Gitalk on your Docsify
 
+<span class="write-date">2020-08-26</span>
+
 <p class="indent">
 친구가 댓글 기능을 넣은 것을 보고 나도 하고 싶어졌다. 댓글을 위한 여러 라이브러리가 있는데 선택하기 어려워 방황을 많이 했다.
 </p>
@@ -12,7 +14,7 @@
 그 외에 disqus, utterances, Gitalk 등이 있었는데, 그 중에서 Gitalk을 선택하여 적용하였다. 기능 자체는 utterances와 유사하지만 디자인이 마음에 안들어서 바꾸기 귀찮았다.
 </p>
 
-## CDN
+## 🔗 CDN
 
 <p class="indent">
 이 글을 읽는 사람의 Docsify가 hash모드에서 돌아간다고 가정하고 설치법을 기술한다.
