@@ -2,9 +2,25 @@
     position: fixed;
     top: 100px;
 }
+@media screen and (max-width: 1300px) {
+    .page_toc {
+        display: none;
+    }
+}
 
 .content {
     padding-top: 0px;
+}
+
+.write-date {
+    font-size: 0.8rem;
+    -ms-user-select: none; 
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    margin-left: 4px;
+    color: rgb(147, 147, 147);
 }
 
 .holder {
@@ -13,95 +29,45 @@
     padding: 20px;
 }
 
-.popup {
-    position: fixed;
-    width: 250px;
-    box-shadow: 0px 0px 6px 2px gray;
-    background-color: white;
+.indent {
+    text-indent: 1rem;
 }
 
-.popup-header {
-    background-color: whitesmoke;
+/*
+ * Gitalk container size
+ */
+#gitalk-container {
+    margin: 0 auto;
+    max-width: 80%;
+    padding: 0px 15px 35px 15px;
+}
+.gt-container .gt-header-controls {
+    display: flex;
+}
+.gt-container .gt-header-controls-tip {
+    flex: 1;
 }
 
-.popup div {
-    padding: 4px 8px;
+/*
+ * Gitalk container theme color
+ */
+.gt-container .gt-comment-username,
+.gt-container a,
+.gt-container .gt-link-counts,
+.gt-container .gt-header-controls-tip {
+    color: var(--theme-color,#42b983) !important;
 }
-
-
-.resizable {
-    padding: 0px !important;
-    position: fixed;
-
-    --resizer-weight: 3px;
+.gt-container .gt-btn {
+    border: 1px solid var(--theme-color,#42b983) !important;
+    background-color: var(--theme-color,#42b983) !important;
 }
-
-.resizable .resizer {
-    width: calc(var(--resizer-weight) * 2);
-    height: calc(var(--resizer-weight) * 2);
-    background: white;
-    border: 1px solid #4286f4;
-    /* background: unset;
-    border: unset; */
-    position: absolute;
+.gt-container .gt-btn-preview {
+    background-color: white !important;
+    color: var(--theme-color,#42b983) !important;
 }
-.resizable .resizer.top-left {
-    z-index: 1;
-    border-radius: 50%;
-    width: calc(var(--resizer-weight) * 4);
-    height: calc(var(--resizer-weight) * 4);
-    left: calc(var(--resizer-weight) * -2);
-    top: calc(var(--resizer-weight) * -2);
-    cursor: nwse-resize;
+.gt-container .gt-svg svg {
+    fill: var(--theme-color,#42b983) !important;
 }
-.resizable .resizer.top-right {
-    z-index: 1;
-    border-radius: 50%;
-    width: calc(var(--resizer-weight) * 4);
-    height: calc(var(--resizer-weight) * 4);
-    right: calc(var(--resizer-weight) * -2);;
-    top: calc(var(--resizer-weight) * -2);
-    cursor: nesw-resize;
-}
-.resizable .resizer.bottom-left {
-    z-index: 1;
-    border-radius: 50%;
-    width: calc(var(--resizer-weight) * 4);
-    height: calc(var(--resizer-weight) * 4);
-    left: calc(var(--resizer-weight) * -2);
-    bottom: calc(var(--resizer-weight) * -2);
-    cursor: nesw-resize;
-}
-.resizable .resizer.bottom-right {
-    z-index: 1;
-    border-radius: 50%;
-    width: calc(var(--resizer-weight) * 4);
-    height: calc(var(--resizer-weight) * 4);
-    right: calc(var(--resizer-weight) * -2);
-    bottom: calc(var(--resizer-weight) * -2);
-    cursor: nwse-resize;
-}
-.resizable .resizer.bottom {
-    left: calc(var(--resizer-weight) - 1px);
-    width: calc(100% - (var(--resizer-weight) - 1px) * 2);
-    bottom: calc(var(--resizer-weight) * -1);
-    cursor: ns-resize;
-}
-.resizable .resizer.top {
-    left: calc(var(--resizer-weight) - 1px);
-    width: calc(100% - (var(--resizer-weight) - 1px) * 2);
-    top: calc(var(--resizer-weight) * -1);
-    cursor: ns-resize;
-}
-.resizable .resizer.left {
-    top: calc(var(--resizer-weight) - 1px);
-    height: calc(100% - (var(--resizer-weight) - 1px) * 2);
-    left: calc(var(--resizer-weight) * -1);
-    cursor: ew-resize;
-}
-.resizable .resizer.right {
-    top: calc(var(--resizer-weight) - 1px);
-    height: calc(100% - (var(--resizer-weight) - 1px) * 2);
-    right: calc(var(--resizer-weight) * -1);
-    cursor: ew-resize;
+.gt-container .gt-comment-admin .gt-comment-content {
+    background-color: #f6fef7 !important;
 }

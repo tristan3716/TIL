@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Today, I Learned</title>
+    <title>Today I Learned</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="description" content="Hyeon-uk's TIL">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
     <link rel="stylesheet" href="./css/common.css">
     <link rel="stylesheet" href="./css/sidebar.css">
-    <link rel="stylesheet" href="https://unpkg.com/docsify-toc@1.0.0/dist/toc.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
 </head>
 <body>
     <div id="app">Loading...</div>
@@ -22,8 +22,8 @@
             name: '📚 Today I Learned',
             repo: 'https://github.com/tristan3716/TIL',
             routerMode: 'hash',
-            loadSidebar: true,
-            loadNavbar: true,
+            loadSidebar: 'sidebar.md',
+            loadNavbar: 'navbar.md',
             subMaxLevel: 2,
             copyCode: {
                 buttonText : 'Copy to clipboard',
@@ -31,7 +31,9 @@
                 successText: 'Copied',
             },
             alias: {
-                '/.*/_navbar.md': '/_navbar.md',
+                '/General/sidebar.md': '/sidebar.md',
+                '/TIL/.*/sidebar.md': '/sidebar.md',
+                '/.*/navbar.md': '/navbar.md',
             },
             search: {
                 maxAge: 86400000,
@@ -45,36 +47,34 @@
                 depth: 6,
             },
             search: 'auto',
-            toc: {
-                scope: '.markdown-section',
-                headings: 'h2, h3, h4, h5, h6',
-                title: 'Table of Contents',
-            },
             plugins: [
                 function (hook, vm) {
-                    // load livere
-                    hook.afterEach((content) => {
-                        const comment =
-                            "\n<hr><div id='lv-container' data-id='city' data-uid='MTAyMC81MTM5OC8yNzg3OQ=='></div>";
-                        hook.afterEach = null;
-                        return content + comment;
-                    });
+                    hook.mounted(function() {
+                        const div = Docsify.dom.create('div');
+                        div.id = 'gitalk-container';
+                        const main = Docsify.dom.getNode('#main');
+                        Docsify.dom.appendTo(Docsify.dom.find('.content'), div);
+                    })
+                    hook.doneEach(function() {
+                        const el = document.getElementById('gitalk-container');
+                        while (el.hasChildNodes()) {
+                            el.removeChild(el.firstChild);
+                        }
 
-                    hook.doneEach(function () {
-                        (function (d, s) {
-                            var j,
-                            e = d.getElementsByTagName(s)[0];
-                            if (typeof LivereTower === "function") {
-                                return;
-                            }
-                            j = d.createElement(s);
-                            j.src = "https://cdn-city.livere.com/js/embed.dist.js";
-                            j.async = true;
-                            e.parentNode.insertBefore(j, e);
-                        })
-                        (document, "script");
-                    });
-                },
+                        const path = /^.*?#(\/.*?)(?:\?.*|)$/g.exec(location.href)[1];
+                        const gitalk = new Gitalk({
+                            clientID: 'fecc5ce3a644fd78da07',
+                            clientSecret: '0793283b7b9fc33d631d914ffbe256807d6b1850',
+                            id: `hash:${path}`,
+                            repo: 'TIL',
+                            owner: 'tristan3716',
+                            admin: ['tristan3716'],
+                            title: `Replies: ${path}`,
+                        });
+
+                        gitalk.render('gitalk-container');
+                    })
+                }
             ],
         }
     </script>
@@ -83,7 +83,8 @@
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
     <script src="https://unpkg.com/docsify-copy-code@2"></script>
-    <script src="https://unpkg.com/docsify-toc@1.0.0/dist/toc.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
 </script>
 </body>
 </html>
