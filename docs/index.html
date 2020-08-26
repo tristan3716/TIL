@@ -60,19 +60,22 @@
                         while (el.hasChildNodes()) {
                             el.removeChild(el.firstChild);
                         }
+                        
+                        const pathGroup = /^.*?#(\/.*?)(?:\?.*|)$/g.exec(location.href);
+                        const path = pathGroup.length > 1 ? pathGroup[1] : null;
+                        if (path !== '/') {
+                            const gitalk = new Gitalk({
+                                clientID: 'fecc5ce3a644fd78da07',
+                                clientSecret: '0793283b7b9fc33d631d914ffbe256807d6b1850',
+                                id: `hash:${path}`,
+                                repo: 'TIL',
+                                owner: 'tristan3716',
+                                admin: ['tristan3716'],
+                                title: `Replies: ${path}`,
+                            });
 
-                        const path = /^.*?#(\/.*?)(?:\?.*|)$/g.exec(location.href)[1];
-                        const gitalk = new Gitalk({
-                            clientID: 'fecc5ce3a644fd78da07',
-                            clientSecret: '0793283b7b9fc33d631d914ffbe256807d6b1850',
-                            id: `hash:${path}`,
-                            repo: 'TIL',
-                            owner: 'tristan3716',
-                            admin: ['tristan3716'],
-                            title: `Replies: ${path}`,
-                        });
-
-                        gitalk.render('gitalk-container');
+                            gitalk.render('gitalk-container');
+                        }
                     })
                 }
             ],
