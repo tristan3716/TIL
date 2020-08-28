@@ -13,6 +13,7 @@
 
 - Others
     - [Setup Gitalk](/Others/gitalk)
+    - [Create Metadatas on Docsify](/Others/docsify-meta)
 
 - TIL
     - 2020-08
